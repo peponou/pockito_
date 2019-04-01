@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        input[type=text] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $("button").click(function(){
+            $.post("http:/localhost:8080/shortener",
+                {
+                    "originalUrl": document.getElementById("originalUrl").value
+                },
+                function(){
+                    console.log("success");
+                });
+        });
+    });
+</script>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("originalUrl").value;
+        document.getElementById("demo").innerHTML = x;
+    }
+</script>
+
+<body>
+<form>
+    <label for="originalUrl">Originale</label>
+    <input type="text" id="originalUrl" name="originalUrl">
+    <button>Push it!</button>
+</form>
+
+<p id="demo"></p>
+
+</body>
+</html>
