@@ -1,15 +1,16 @@
 package com.urlshortener.pockito.service;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
 import com.urlshortener.pockito.common.IDConverter;
 import com.urlshortener.pockito.model.URLEntity;
 import com.urlshortener.pockito.repository.URLRepository;
+import org.hashids.Hashids;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Service
 public class URLConverterService {
@@ -27,20 +28,27 @@ public class URLConverterService {
         LOGGER.info("Shortening {}", originalUrl);
         URLEntity urlEntity = new URLEntity(localURL, originalUrl);
         String shortId;
+
+
         if (!urlRepository.existsByOriginalUrl(originalUrl)) {
-            Long seq = urlRepository.findFirstByOrderBySeqDesc().getSeq();
-            System.out.println(seq);
-            shortId = IDConverter.INSTANCE.createUniqueID(seq);
-            urlEntity.setOriginalUrl(originalUrl);
-            urlEntity.setShortId(shortId);
-            urlEntity.setSeq(seq+1);
-            urlRepository.save(urlEntity);
+            try {
+                URL url = new URL(originalUrl);
+                Long seq = urlRepository.findFirstByOrderBySeqDesc().getSeq();
+                shortId = IDConverter.INSTANCE.createUniqueID(seq);
+                urlEntity.setOriginalUrl(originalUrl);
+                urlEntity.setShortId(shortId);
+                urlEntity.setSeq(seq+1);
+                urlRepository.save(urlEntity);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                shortId = "Unable to shorten that link. It is not a valid url.";
             }
+        }
         else {
             shortId = urlEntity.getShortId();
         }
-        String baseString = formatLocalURLFromShortener(localURL);
-        String shortenedURL = baseString + shortId;
+//        String baseString = formatLocalURLFromShortener(localURL);
+        String shortenedURL = localURL + shortId;
 
         return shortenedURL;
     }
