@@ -1,4 +1,4 @@
-export class Urlentity {
+export class URLEntity {
     id: string;
     originalUrl: string;
     shortId: string;

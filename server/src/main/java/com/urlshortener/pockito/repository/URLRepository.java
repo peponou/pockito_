@@ -12,8 +12,8 @@ public interface URLRepository  extends MongoRepository<URLEntity, String> {
 
     URLEntity findFirstByOrderBySeqDesc();
 
-//    QURLEntity q person = new QPerson("person");
-//    List<Person> result = repository.findAll(person.address.zipCode.eq("C0123"));
-
     boolean existsByOriginalUrl(String originalUrl);
+
+    @Query("{ 'originalUrl' : {$regex: ?0, $options: 'i' }}")
+    URLEntity findByOriginalUrl(String originalUrl);
 }

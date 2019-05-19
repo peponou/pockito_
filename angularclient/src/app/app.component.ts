@@ -1,34 +1,37 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { URLConverterService } from './service/url-service';
-import { Urlentity } from './model/urlentity';
-import { CommonModule } from '@angular/common'
+import {URLEntity} from "./model/URLEntity";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
- 
+
+  urlEntity: URLEntity;
   title: string;
   isShorted = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private urlConverterService: URLConverterService) {
     this.title = 'Pocki.to';
+    this.urlEntity = new URLEntity();
   }
   
-  onShort(originalUrl: string) {
+  onShort() {
     this.isShorted = true;
-    this.urlConverterService.shortURL(originalUrl).subscribe(
-      (response)=> console.log(response),
-      (error) =>console.log(error)
-    );
+    this.urlConverterService.shortURL(this.urlEntity).subscribe(
+      result => this.gotoUserList(),
+      (response)=> console.log(response.toString()));
   }
 
-  onCopy(){
-    
+  onCopy() {
+    this.isShorted = true;
+    this.urlConverterService.shortURL(this.urlEntity).subscribe(
+      result => this.gotoUserList(),
+      (response)=> console.log(response.toString()));
   }
- 
   gotoUserList() {
     this.router.navigate(['/shortener']);
   }

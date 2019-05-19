@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Urlentity } from '../model/urlentity';
+import { URLEntity } from '../model/URLEntity';
 import { Observable } from 'rxjs/Observable';
 
 const httpOptions = { headers: new HttpHeaders({
@@ -12,17 +12,17 @@ const httpOptions = { headers: new HttpHeaders({
 @Injectable()
 export class URLConverterService {
 
-  private shortener: string;
+  private shortenerUrl: string;
 
   constructor(private http: HttpClient) {
-    this.shortener = 'http://localhost:8080/shortener';
+    this.shortenerUrl = 'http://localhost:8080/shortener';
   }
 
-  public findByShortId(): Observable<Urlentity> {
-    return this.http.get<Urlentity>(this.shortener);
+  public findByOriginalUrl(urlEntity: URLEntity) {
+    return this.http.get<URLEntity>(this.shortenerUrl);
   }
 
-  public shortURL(originalURL: string) {
-    return this.http.post<Urlentity>(this.shortener, originalURL, httpOptions);
+  public shortURL(urlEntity: URLEntity) {
+    return this.http.post<URLEntity>(this.shortenerUrl, urlEntity, httpOptions);
   }
 }

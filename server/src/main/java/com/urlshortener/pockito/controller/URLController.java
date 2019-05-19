@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 public class URLController {
@@ -21,19 +22,22 @@ public class URLController {
     public URLController(URLConverterService urlConverterService) {
         this.urlConverterService = urlConverterService;
     }
+
     @CrossOrigin
     @GetMapping("/shortener")
-    public URLEntity findByShortId(String shortId) {
-        return urlRepository.findByShortId(shortId);
+    public List<URLEntity> findByOriginalUrl() {
+        return urlRepository.findAll();
     }
+
     @CrossOrigin
     @PostMapping("/shortener")
-    String shortURL(@RequestBody String original) {
+    String shortURL(@RequestBody URLEntity urlEntity) {
+        String original = urlEntity.getOriginalUrl();
         return urlConverterService.shortenURL("https://pocki.to/", original);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @CrossOrigin
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public RedirectView redirectUrl(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws IOException, URISyntaxException, Exception {
         String redirectUrlString = urlConverterService.getLongURLFromID(id);
         RedirectView redirectView = new RedirectView();
