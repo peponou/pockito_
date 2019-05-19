@@ -1,15 +1,15 @@
 package com.urlshortener.pockito.common;
 
-import com.fasterxml.jackson.core.Base64Variant;
 import org.hashids.Hashids;
 
-import java.io.ByteArrayOutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A IDConverter encoder/decoder.
  *
- * @author Sebastian Ruhleder, sebastian@seruco.io
  */
 public class IDConverter {
 
@@ -66,34 +66,12 @@ public class IDConverter {
     }
 
     public static String createUniqueID(Long id) {
-//        Base64.getEncoder().encodeToString(id.toString().getBytes());
-//        List<Integer> base62ID = convertBase10ToBase62ID(id);
-//        StringBuilder uniqueURLID = new StringBuilder();
-//        for (int digit: base62ID) {
-//            uniqueURLID.append(indexToCharTable.get(digit));
-//        }
-        GetBase62(6);
         Hashids hashids = new Hashids("this is my salt");
         String s = hashids.encode(id);
-//        return GetBase62(6);
         return s;
-    }
-    private static char[] _base62chars =
-            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-                    .toCharArray();
-    private static Random _random = new Random();
-
-    public static String GetBase62(int length)
-    {
-        StringBuilder sb = new StringBuilder(length);
-        for (int i=0; i<length; i++) {
-        sb.append(_base62chars[_random.nextInt(62)]);}
-
-        return sb.toString();
     }
 
     private static List<Integer> convertBase10ToBase62ID(Long id) {
-        Base64.getDecoder();
         List<Integer> digits = new LinkedList<>();
         while(id > 0) {
             int remainder = (int)(id % 62);
