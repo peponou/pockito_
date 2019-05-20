@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Observable';
 const httpOptions = { headers: new HttpHeaders({
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods' : 'HEAD, GET, POST, PUT, PATCH, DELETE',
-    'Access-Control-Allow-Headers' : 'Origin, Content-Type, X-Auth-Token' }) };
+    'Access-Control-Allow-Headers' : 'Origin, Content-Type, X-Auth-Token' }),
+    'responseType': 'text'};
 
 
 @Injectable()
@@ -23,6 +24,6 @@ export class URLConverterService {
   }
 
   public shortURL(urlEntity: URLEntity) {
-    return this.http.post<URLEntity>(this.shortenerUrl, urlEntity, httpOptions);
+    return this.http.post(this.shortenerUrl, urlEntity, httpOptions);
   }
 }

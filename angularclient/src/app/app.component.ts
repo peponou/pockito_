@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { URLConverterService } from './service/url-service';
-import {URLEntity} from "./model/URLEntity";
+import {URLEntity} from './model/URLEntity';
 
 @Component({
   selector: 'app-root',
@@ -22,15 +22,13 @@ export class AppComponent {
   onShort() {
     this.isShorted = true;
     this.urlConverterService.shortURL(this.urlEntity).subscribe(
-      result => this.gotoUserList(),
-      (response)=> console.log(response.toString()));
+      (response) => this.urlEntity.shortId = response);
   }
 
   onCopy() {
-    this.isShorted = true;
-    this.urlConverterService.shortURL(this.urlEntity).subscribe(
-      result => this.gotoUserList(),
-      (response)=> console.log(response.toString()));
+    // this.isShorted = true;
+    // this.urlConverterService.shortURL(this.urlEntity).subscribe(
+    //   (response)=> console.log(response));
   }
   gotoUserList() {
     this.router.navigate(['/shortener']);
