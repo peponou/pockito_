@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URLEntity } from '../model/URLEntity';
-import { Observable } from 'rxjs/Observable';
 
 const httpOptions = { headers: new HttpHeaders({
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods' : 'HEAD, GET, POST, PUT, PATCH, DELETE',
     'Access-Control-Allow-Headers' : 'Origin, Content-Type, X-Auth-Token' }),
-    'responseType': 'text'};
+    responseType: 'text'};
 
 
 @Injectable()
