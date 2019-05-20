@@ -20,12 +20,14 @@
           </span>
         </div>
         <div [hidden]="!originalUrl.pristine" class="alert alert-danger">Name is required</div>
-        <div *ngIf = "isShorted" class="text-center list-inline ">
+        <div *ngIf = "isShorted" class="input-group text-center list-inline ">
           <input type="text" [(ngModel)]="urlEntity.shortId"
                  class="form-control" name="shortId" id="shortId"
                  required #shortId="ngModel">
           <span>&nbsp;</span>
-          <button type="submit" class="btn btn-info" (click)="onCopy()" text-align="right">Copy</button>
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-info" (click)="onCopy()" text-align="right">Copy</button>
+          </span>
         </div>
       </form>
     </div>
