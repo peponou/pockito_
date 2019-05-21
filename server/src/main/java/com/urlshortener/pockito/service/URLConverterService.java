@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 @Service
 public class URLConverterService {
     private static final Logger LOGGER = LoggerFactory.getLogger(URLConverterService.class);
@@ -27,22 +30,22 @@ public class URLConverterService {
         String response = new String();
         String shortId = new String();
         if (!urlRepository.existsByOriginalUrl(originalUrl)) {
-//            try {
-//                URL url = new URL(originalUrl);
-                if (URLValidator.INSTANCE.validateURL(originalUrl)) {
+            try {
+                URL url = new URL(originalUrl);
+//                if (URLValidator.INSTANCE.validateURL(originalUrl)) {
                     Long seq = urlRepository.findFirstByOrderBySeqDesc().getSeq();
                     shortId = IDConverter.INSTANCE.createUniqueID(seq);
-//                    urlEntity.setOriginalUrl(url.toString());
-                    urlEntity.setOriginalUrl(originalUrl);
+                    urlEntity.setOriginalUrl(url.toString());
+//                    urlEntity.setOriginalUrl(originalUrl);
                     urlEntity.setShortId(shortId);
                     urlEntity.setSeq(seq + 1);
                     urlRepository.save(urlEntity);
-                } else {
-                    response = "Unable to shorten that link. It is not a valid url.";
-                }
-//            } catch (MalformedURLException e) {
-//                response = "Unable to shorten that link. It is not a valid url.";
-//            }
+//                } else {
+//                    response = "Unable to shorten that link. It is not a valid url.";
+//                }
+            } catch (MalformedURLException e) {
+                response = "Unable to shorten that link. It is not a valid url.";
+            }
         }
         else {
             shortId = (urlRepository.findByOriginalUrl(originalUrl)).getShortId();
