@@ -23,7 +23,7 @@ public class URLConverterService {
 
     public String shortenURL(String localURL, String originalUrl) {
         LOGGER.info("Shortening {}", originalUrl);
-        URLEntity urlEntity = new URLEntity(localURL, originalUrl);
+        URLEntity urlEntity = new URLEntity();
         String response = new String();
         String shortId = new String();
         if (!urlRepository.existsByOriginalUrl(originalUrl)) {
@@ -45,7 +45,7 @@ public class URLConverterService {
 //            }
         }
         else {
-            shortId = urlEntity.getShortId();
+            shortId = (urlRepository.findByOriginalUrl(originalUrl)).getShortId();
         }
 //        String baseString = formatLocalURLFromShortener(localURL);
         if (response.equals("")) {
